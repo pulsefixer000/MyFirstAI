@@ -11,21 +11,10 @@ namespace MyFirstAI.Services
     {
         public async Task StartStreamingResponseDemoAsync()
         {
-            var token = Environment.GetEnvironmentVariable("GITHUB_TOKEN");
+            ChatClient? client = CreateChatClient();
 
-            if (string.IsNullOrWhiteSpace(token))
-            {
-                Console.WriteLine("GITHUB_TOKEN is not configured.");
+            if (client is null)
                 return;
-            }
-
-            ChatClient client = new(
-                model: "gpt-4.1-mini",
-                credential: new ApiKeyCredential(token),
-                options: new OpenAIClientOptions
-                {
-                    Endpoint = new Uri("https://models.inference.ai.azure.com")
-                });
 
             Console.Write("Ask AI: ");
             string? question = Console.ReadLine();
@@ -48,23 +37,12 @@ namespace MyFirstAI.Services
         }
         public async Task StartStreamingChatBotAsync()
         {
-            List<ChatMessage> messages = new();
+            ChatClient? client = CreateChatClient();
 
-            var token = Environment.GetEnvironmentVariable("GITHUB_TOKEN");
-
-            if (string.IsNullOrWhiteSpace(token))
-            {
-                Console.WriteLine("GITHUB_TOKEN is not configured.");
+            if (client is null)
                 return;
-            }
 
-            ChatClient client = new(
-                model: "gpt-4.1-mini",
-                credential: new ApiKeyCredential(token),
-                options: new OpenAIClientOptions
-                {
-                    Endpoint = new Uri("https://models.inference.ai.azure.com")
-                });
+            List<ChatMessage> messages = new();
 
             Console.WriteLine("===== AI Streaming ChatBot =====");
             Console.WriteLine("Type 'exit' to quit.");
@@ -110,31 +88,20 @@ namespace MyFirstAI.Services
 
         public async Task StartStreamingChatBot2Async()
         {
-            var token = Environment.GetEnvironmentVariable("GITHUB_TOKEN");
+            ChatClient? client = CreateChatClient();
 
-            if (string.IsNullOrWhiteSpace(token))
-            {
-                Console.WriteLine("GITHUB_TOKEN is not configured.");
+            if (client is null)
                 return;
-            }
-
-            ChatClient client = new(
-                model: "gpt-4.1-mini",
-                credential: new ApiKeyCredential(token),
-                options: new OpenAIClientOptions
-                {
-                    Endpoint = new Uri("https://models.inference.ai.azure.com")
-                });
 
             List<ChatMessage> messages = new()
-    {
-        new SystemChatMessage(
-            """
-            You are a helpful AI assistant.
-            Answer clearly and concisely.
-            """
-        )
-    };
+                {
+                    new SystemChatMessage(
+                        """
+                        You are a helpful AI assistant.
+                        Answer clearly and concisely.
+                        """
+                    )
+                };
 
             Console.WriteLine("========== AI Streaming ChatBot ==========");
             Console.WriteLine("Type 'exit' to quit.");
@@ -175,23 +142,12 @@ namespace MyFirstAI.Services
         }
         public async Task StartStreamingChatBotWithSpinnerAsync()
         {
-            List<ChatMessage> messages = new();
+            ChatClient? client = CreateChatClient();
 
-            var token = Environment.GetEnvironmentVariable("GITHUB_TOKEN");
-
-            if (string.IsNullOrWhiteSpace(token))
-            {
-                Console.WriteLine("GITHUB_TOKEN is not configured.");
+            if (client is null)
                 return;
-            }
 
-            ChatClient client = new(
-                model: "gpt-4.1-mini",
-                credential: new ApiKeyCredential(token),
-                options: new OpenAIClientOptions
-                {
-                    Endpoint = new Uri("https://models.inference.ai.azure.com")
-                });
+            List<ChatMessage> messages = new();
 
             Console.WriteLine("===== AI Streaming ChatBot =====");
             Console.WriteLine("Type 'exit' to quit.");
@@ -271,23 +227,12 @@ namespace MyFirstAI.Services
 
         public async Task StartStreamingChatBotWithThinkingAsync()
         {
-            List<ChatMessage> messages = new();
+            ChatClient? client = CreateChatClient();
 
-            var token = Environment.GetEnvironmentVariable("GITHUB_TOKEN");
-
-            if (string.IsNullOrWhiteSpace(token))
-            {
-                Console.WriteLine("GITHUB_TOKEN is not configured.");
+            if (client is null)
                 return;
-            }
 
-            ChatClient client = new(
-                model: "gpt-4.1-mini",
-                credential: new ApiKeyCredential(token),
-                options: new OpenAIClientOptions
-                {
-                    Endpoint = new Uri("https://models.inference.ai.azure.com")
-                });
+            List<ChatMessage> messages = new();
 
             Console.WriteLine("===== AI Thinking ChatBot =====");
             Console.WriteLine("Type 'exit' to quit.");
@@ -342,23 +287,12 @@ namespace MyFirstAI.Services
 
         public async Task StartStreamingChatBotWithThinkingIndicatorAsync()
         {
-            List<ChatMessage> messages = new();
+            ChatClient? client = CreateChatClient();
 
-            var token = Environment.GetEnvironmentVariable("GITHUB_TOKEN");
-
-            if (string.IsNullOrWhiteSpace(token))
-            {
-                Console.WriteLine("GITHUB_TOKEN is not configured.");
+            if (client is null)
                 return;
-            }
 
-            ChatClient client = new(
-                model: "gpt-4.1-mini",
-                credential: new ApiKeyCredential(token),
-                options: new OpenAIClientOptions
-                {
-                    Endpoint = new Uri("https://models.inference.ai.azure.com")
-                });
+            List<ChatMessage> messages = new();
 
             Console.WriteLine("===== AI Streaming ChatBot =====");
             Console.WriteLine("Type 'exit' to quit.");
@@ -412,6 +346,11 @@ namespace MyFirstAI.Services
 
         public async Task StartStreamingDotNetExpertChatBotAsync()
         {
+            ChatClient? client = CreateChatClient();
+
+            if (client is null)
+                return;
+
             List<ChatMessage> messages =
             [
                 new SystemChatMessage(
@@ -426,22 +365,6 @@ namespace MyFirstAI.Services
               "I'm a .NET Technical Assistant. Please ask a .NET related question."
             """)
             ];
-
-            var token = Environment.GetEnvironmentVariable("GITHUB_TOKEN");
-
-            if (string.IsNullOrWhiteSpace(token))
-            {
-                Console.WriteLine("GITHUB_TOKEN is not configured.");
-                return;
-            }
-
-            ChatClient client = new(
-                model: "gpt-4.1-mini",
-                credential: new ApiKeyCredential(token),
-                options: new OpenAIClientOptions
-                {
-                    Endpoint = new Uri("https://models.inference.ai.azure.com")
-                });
 
             Console.WriteLine("===== .NET Expert AI =====");
             Console.WriteLine("Type 'exit' to quit.");
@@ -481,6 +404,25 @@ namespace MyFirstAI.Services
             }
 
             Console.WriteLine("\nGood Bye!");
+        }
+
+        private ChatClient? CreateChatClient()
+        {
+            var token = ApiKeyProvider.GetApiKey("OPENAI_API_KEY");
+
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                Console.WriteLine("OPENAI_API_KEY is not configured.");
+                return null;
+            }
+
+            return new ChatClient(
+                model: "gpt-6-luna",
+                credential: new ApiKeyCredential(token),
+                options: new OpenAIClientOptions
+                {
+                    Endpoint = new Uri("https://api.openai.com/v1")
+                });
         }
     }
 }
