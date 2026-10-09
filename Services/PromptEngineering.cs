@@ -12,43 +12,327 @@ namespace MyFirstAI.Services
         /// More advanced ChatBot demo using PromptEngineering, you can ask questions and get answers from the AI model. The AI model will follow the rules defined in the system message.
         /// </summary>
         /// <returns></returns>
+        //public async Task TeachingChatBotAsync()
+        //{
+        //    var token = ApiKeyProvider.GetApiKey("OPENAI_API_KEY");
+
+        //    if (string.IsNullOrWhiteSpace(token))
+        //    {
+        //        Console.WriteLine("OPENAI_API_KEY is not configured.");
+        //        return;
+        //    }
+
+        //    ChatClient client = new(
+        //        model: "gpt-4.1-mini",
+        //        credential: new ApiKeyCredential(token),
+        //        options: new OpenAIClientOptions
+        //        {
+        //            Endpoint = new Uri("https://models.inference.ai.azure.com")
+        //        });
+
+        //    List<ChatMessage> messages =
+        //    [
+        //        new SystemChatMessage(
+        //    """
+        //    You are a Senior .NET Mentor.
+
+        //    Your goal is to teach .NET and AI concepts clearly.
+
+        //    Follow these rules:
+        //    1. Explain in simple English.
+        //    2. Use bullet points whenever possible.
+        //    3. Provide one real-world analogy.
+        //    4. Provide one practical C# example if applicable.
+        //    5. Highlight important keywords in **bold**.
+        //    6. Keep answers under 250 words unless I ask for more details.
+        //    7. If I ask an interview question, first provide the answer, then explain why it is correct.
+        //    8. If I ask for code, write clean, production-quality C# code and explain it step by step.
+        //    """
+        //)
+        //    ];
+
+        //    while (true)
+        //    {
+        //        Console.Write("\nYou: ");
+        //        string? question = Console.ReadLine();
+
+        //        if (string.IsNullOrWhiteSpace(question))
+        //            continue;
+
+        //        if (question.Equals("exit", StringComparison.OrdinalIgnoreCase))
+        //            break;
+
+        //        messages.Add(new UserChatMessage(question));
+
+        //        ChatCompletion completion = await client.CompleteChatAsync(messages);
+
+        //        string answer = completion.Content[0].Text;
+
+        //        Console.WriteLine($"\nAI:\n{answer}");
+
+        //        messages.Add(new AssistantChatMessage(answer));
+        //    }
+        //}
+
+        //        public async Task InterviewChatBotAsync()
+        //        {
+        //            //var apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY");
+        //            // Do NOT hardcode secrets in source. Read from environment or a secrets store.
+        //            var apiKey = ApiKeyProvider.GetApiKey("OPENAI_API_KEY");
+
+        //            if (string.IsNullOrWhiteSpace(apiKey))
+        //            {
+        //                Console.WriteLine("OPENAI_API_KEY is not configured.");
+        //                return;
+        //            }
+
+        //            using var http = new System.Net.Http.HttpClient();
+        //            http.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", apiKey);
+
+        //            List<object> messages = new()
+        //            {
+        //                new { role = "system", content = @"You are a Senior .NET Technical Interviewer.
+
+        //Rules:
+        //- Ask only one interview question at a time.
+        //- Wait for my answer.
+        //- Evaluate my answer.
+        //- Give a score from 1 to 10.
+        //- Explain what I did well.
+        //- Explain what I should improve.
+        //- Finally provide the ideal answer." }
+        //            };
+
+        //            while (true)
+        //            {
+        //                Console.Write("\nYou: ");
+        //                string? question = Console.ReadLine();
+
+        //                if (string.IsNullOrWhiteSpace(question))
+        //                    continue;
+
+        //                if (question.Equals("exit", StringComparison.OrdinalIgnoreCase))
+        //                    break;
+
+        //                messages.Add(new { role = "user", content = question });
+
+        //                var payload = new
+
+        //                {
+        //                    model = "gpt-4o-mini",
+        //                    messages = messages
+        //                };
+
+        //                var json = System.Text.Json.JsonSerializer.Serialize(payload);
+        //                using var content = new System.Net.Http.StringContent(json, System.Text.Encoding.UTF8, "application/json");
+
+        //                //var resp = await http.PostAsync("https://api.openai.com/v1/chat/completions", content);
+        //                //resp.EnsureSuccessStatusCode();
+
+
+        //                var respText = await resp.Content.ReadAsStringAsync();
+        //                using var doc = System.Text.Json.JsonDocument.Parse(respText);
+        //                string answer = doc.RootElement.GetProperty("choices")[0].GetProperty("message").GetProperty("content").GetString() ?? string.Empty;
+
+        //                Console.WriteLine($"\nAI:\n{answer}");
+
+        //                messages.Add(new { role = "assistant", content = answer });
+        //            }
+        //        }
+
+
+
+        //public async Task InterviewChatBotAsync()
+        //{
+        //    // For testing only.
+        //    // Better: store this in OPENAI_API_KEY environment variable.
+        //    //var apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY");
+        //    var apiKey = ApiKeyProvider.GetApiKey("OPENAI_API_KEY");
+
+        //    if (string.IsNullOrWhiteSpace(apiKey))
+        //    {
+        //        Console.WriteLine("OPENAI_API_KEY is not configured.");
+        //        return;
+        //    }
+
+        //    using var http = new HttpClient();
+
+        //    http.DefaultRequestHeaders.Authorization =
+        //        new System.Net.Http.Headers.AuthenticationHeaderValue(
+        //            "Bearer",
+        //            apiKey);
+
+        //    // Conversation history
+        //    List<object> messages = new()
+        //    {
+        //        new
+        //        {
+        //            role = "system",
+        //            content = @"You are a Senior .NET Technical Interviewer.
+
+        //Rules:
+        //- Ask only one interview question at a time.
+        //- Wait for my answer.
+        //- Evaluate my answer.
+        //- Give a score from 1 to 10.
+        //- Explain what I did well.
+        //- Explain what I should improve.
+        //- Finally provide the ideal answer.
+        //- Keep the explanation suitable for an experienced .NET developer."
+        //        }
+        //    };
+
+        //    while (true)
+        //    {
+        //        Console.Write("\nYou: ");
+
+        //        string? question = Console.ReadLine();
+
+        //        if (string.IsNullOrWhiteSpace(question))
+        //            continue;
+
+        //        if (question.Equals("exit", StringComparison.OrdinalIgnoreCase))
+        //            break;
+
+        //        messages.Add(new
+        //        {
+        //            role = "user",
+        //            content = question
+        //        });
+
+        //        // OpenAI Responses API request
+        //        var requestBody = new
+        //        {
+        //            model = "gpt-6-luna",
+        //            input = messages
+        //        };
+
+        //        var json = System.Text.Json.JsonSerializer.Serialize(requestBody);
+
+        //        using var content = new StringContent(
+        //            json,
+        //            System.Text.Encoding.UTF8,
+        //            "application/json");
+
+        //        HttpResponseMessage response;
+
+        //        try
+        //        {
+        //            response = await http.PostAsync(
+        //                "https://api.openai.com/v1/responses",
+        //                content);
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            Console.WriteLine($"\nRequest error: {ex.Message}");
+        //            continue;
+        //        }
+
+        //        var responseText =
+        //            await response.Content.ReadAsStringAsync();
+
+        //        // HTTP error
+        //        if (!response.IsSuccessStatusCode)
+        //        {
+        //            Console.WriteLine(
+        //                $"\nAPI Error: {(int)response.StatusCode} {response.StatusCode}");
+
+        //            Console.WriteLine(responseText);
+
+        //            continue;
+        //        }
+
+        //        if (string.IsNullOrWhiteSpace(responseText))
+        //        {
+        //            Console.WriteLine("\nOpenAI returned an empty response.");
+        //            continue;
+        //        }
+
+        //        try
+        //        {
+        //            using var doc =
+        //                System.Text.Json.JsonDocument.Parse(responseText);
+
+        //            var root = doc.RootElement;
+
+        //            // Responses API returns output items.
+        //            string answer = string.Empty;
+
+        //            if (root.TryGetProperty("output", out var output))
+        //            {
+        //                foreach (var item in output.EnumerateArray())
+        //                {
+        //                    if (!item.TryGetProperty("content", out var contentItems))
+        //                        continue;
+
+        //                    foreach (var contentItem in contentItems.EnumerateArray())
+        //                    {
+        //                        if (contentItem.TryGetProperty("text", out var text))
+        //                        {
+        //                            answer = text.GetString() ?? string.Empty;
+
+        //                            if (!string.IsNullOrWhiteSpace(answer))
+        //                                break;
+        //                        }
+        //                    }
+
+        //                    if (!string.IsNullOrWhiteSpace(answer))
+        //                        break;
+        //                }
+        //            }
+
+        //            if (string.IsNullOrWhiteSpace(answer))
+        //            {
+        //                Console.WriteLine("\nCould not extract AI response.");
+        //                Console.WriteLine(responseText);
+        //                continue;
+        //            }
+
+        //            Console.WriteLine($"\nAI:\n{answer}");
+
+        //            // Add AI response to conversation history
+        //            messages.Add(new
+        //            {
+        //                role = "assistant",
+        //                content = answer
+        //            });
+        //        }
+        //        catch (System.Text.Json.JsonException ex)
+        //        {
+        //            Console.WriteLine(
+        //                $"\nJSON parsing error: {ex.Message}");
+
+        //            Console.WriteLine(responseText);
+        //        }
+        //    }
+        //}
+
+
         public async Task TeachingChatBotAsync()
         {
-            var token = Environment.GetEnvironmentVariable("GITHUB_TOKEN");
+            ChatClient? client = CreateChatClient();
 
-            if (string.IsNullOrWhiteSpace(token))
-            {
-                Console.WriteLine("GITHUB_TOKEN is not configured.");
+            if (client is null)
                 return;
-            }
-
-            ChatClient client = new(
-                model: "gpt-4.1-mini",
-                credential: new ApiKeyCredential(token),
-                options: new OpenAIClientOptions
-                {
-                    Endpoint = new Uri("https://models.inference.ai.azure.com")
-                });
 
             List<ChatMessage> messages =
             [
                 new SystemChatMessage(
-            """
-            You are a Senior .NET Mentor.
+        """
+        You are a Senior .NET Mentor.
 
-            Your goal is to teach .NET and AI concepts clearly.
+        Your goal is to teach .NET and AI concepts clearly.
 
-            Follow these rules:
-            1. Explain in simple English.
-            2. Use bullet points whenever possible.
-            3. Provide one real-world analogy.
-            4. Provide one practical C# example if applicable.
-            5. Highlight important keywords in **bold**.
-            6. Keep answers under 250 words unless I ask for more details.
-            7. If I ask an interview question, first provide the answer, then explain why it is correct.
-            8. If I ask for code, write clean, production-quality C# code and explain it step by step.
-            """
-        )
+        Follow these rules:
+        1. Explain in simple English.
+        2. Use bullet points whenever possible.
+        3. Provide one real-world analogy.
+        4. Provide one practical C# example if applicable.
+        5. Highlight important keywords in **bold**.
+        6. Keep answers under 250 words unless I ask for more details.
+        7. If I ask an interview question, first provide the answer, then explain why it is correct.
+        8. If I ask for code, write clean, production-quality C# code and explain it step by step.
+        """)
             ];
 
             while (true)
@@ -76,38 +360,27 @@ namespace MyFirstAI.Services
 
         public async Task InterviewChatBotAsync()
         {
-            var token = Environment.GetEnvironmentVariable("GITHUB_TOKEN");
+            ChatClient? client = CreateChatClient();
 
-            if (string.IsNullOrWhiteSpace(token))
-            {
-                Console.WriteLine("GITHUB_TOKEN is not configured.");
+            if (client is null)
                 return;
-            }
-
-            ChatClient client = new(
-                model: "gpt-4.1-mini",
-                credential: new ApiKeyCredential(token),
-                options: new OpenAIClientOptions
-                {
-                    Endpoint = new Uri("https://models.inference.ai.azure.com")
-                });
 
             List<ChatMessage> messages =
             [
-               new SystemChatMessage(
-    """
-    You are a Senior .NET Technical Interviewer.
+                new SystemChatMessage(
+        """
+        You are a Senior .NET Technical Interviewer.
 
-    Rules:
-    - Ask only one interview question at a time.
-    - Wait for my answer.
-    - Evaluate my answer.
-    - Give a score from 1 to 10.
-    - Explain what I did well.
-    - Explain what I should improve.
-    - Finally provide the ideal answer.
-    """
-)
+        Rules:
+        1. Ask only one interview question at a time.
+        2. Wait for my answer before asking the next question.
+        3. Evaluate my answer.
+        4. Give a score from 1 to 10.
+        5. Explain what I did well.
+        6. Explain what I should improve.
+        7. Finally, provide the ideal answer.
+        8. Keep the explanation suitable for an experienced .NET developer.
+        """)
             ];
 
             while (true)
@@ -123,46 +396,50 @@ namespace MyFirstAI.Services
 
                 messages.Add(new UserChatMessage(question));
 
-                ChatCompletion completion = await client.CompleteChatAsync(messages);
+                try
+                {
+                    ChatCompletion completion =
+                        await client.CompleteChatAsync(messages);
 
-                string answer = completion.Content[0].Text;
+                    string answer = completion.Content[0].Text;
 
-                Console.WriteLine($"\nAI:\n{answer}");
+                    Console.WriteLine($"\nAI:\n{answer}");
 
-                messages.Add(new AssistantChatMessage(answer));
+                    messages.Add(new AssistantChatMessage(answer));
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"\nOpenAI Error:\n{ex.Message}");
+
+                    // Remove the failed user message.
+                    messages.RemoveAt(messages.Count - 1);
+                }
             }
         }
 
         public async Task CodeReviwerChatBotAsync()
         {
-            var token = Environment.GetEnvironmentVariable("GITHUB_TOKEN");
+            ChatClient? client = CreateChatClient();
 
-            if (string.IsNullOrWhiteSpace(token))
-            {
-                Console.WriteLine("GITHUB_TOKEN is not configured.");
+            if (client is null)
                 return;
-            }
-
-            ChatClient client = new(
-                model: "gpt-4.1-mini",
-                credential: new ApiKeyCredential(token),
-                options: new OpenAIClientOptions
-                {
-                    Endpoint = new Uri("https://models.inference.ai.azure.com")
-                });
 
             List<ChatMessage> messages =
             [
-               new SystemChatMessage(
-    """
-    You are a Senior .NET Code Reviewer.
+                new SystemChatMessage(
+        """
+        You are a Senior .NET Code Reviewer.
 
-    Rules:
-    Review every C# code I provide.
-    Suggest improvements.
-    Mention performance, readability, and best practices.
-    """
-)
+        Rules:
+        1. Review every C# code snippet I provide.
+        2. Identify bugs and potential issues.
+        3. Suggest improvements.
+        4. Explain performance considerations.
+        5. Evaluate readability and maintainability.
+        6. Follow C# and .NET best practices.
+        7. Provide corrected code when needed.
+        8. Explain the important changes in simple English.
+        """)
             ];
 
             while (true)
@@ -178,13 +455,22 @@ namespace MyFirstAI.Services
 
                 messages.Add(new UserChatMessage(question));
 
-                ChatCompletion completion = await client.CompleteChatAsync(messages);
+                try
+                {
+                    ChatCompletion completion =
+                        await client.CompleteChatAsync(messages);
 
-                string answer = completion.Content[0].Text;
+                    string answer = completion.Content[0].Text;
 
-                Console.WriteLine($"\nAI:\n{answer}");
+                    Console.WriteLine($"\nAI:\n{answer}");
 
-                messages.Add(new AssistantChatMessage(answer));
+                    messages.Add(new AssistantChatMessage(answer));
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"\nOpenAI Error:\n{ex.Message}");
+                    messages.RemoveAt(messages.Count - 1);
+                }
             }
         }
 
@@ -192,311 +478,292 @@ namespace MyFirstAI.Services
 
         public async Task StartStructuredOutputDemoAsync()
         {
-            var token = Environment.GetEnvironmentVariable("GITHUB_TOKEN");
+            ChatClient? client = CreateChatClient();
 
-            if (string.IsNullOrWhiteSpace(token))
-            {
-                Console.WriteLine("GITHUB_TOKEN is not configured.");
+            if (client is null)
                 return;
-            }
-
-            ChatClient client = new(
-                model: "gpt-4.1-mini",
-                credential: new ApiKeyCredential(token),
-                options: new OpenAIClientOptions
-                {
-                    Endpoint = new Uri("https://models.inference.ai.azure.com")
-                });
 
             List<ChatMessage> messages =
             [
                 new SystemChatMessage(
-            """
-            You are a Senior .NET Mentor.
+        """
+        You are a Senior .NET Mentor.
 
-            Return ONLY valid JSON.
+        Return ONLY valid JSON.
+        Do not write markdown.
+        Do not write explanation outside JSON.
 
-            Do not write markdown.
+        Return this schema:
 
-            Do not write explanation outside JSON.
-
-            Return this schema:
-
-            {
-              "question":"",
-              "difficulty":"",
-              "answer":"",
-              "example":""
-            }
-            """),
+        {
+          "question": "",
+          "difficulty": "",
+          "answer": "",
+          "example": ""
+        }
+        """),
 
         new UserChatMessage("Explain Dependency Injection")
             ];
 
-            ChatCompletion completion =
-                await client.CompleteChatAsync(messages);
+            try
+            {
+                ChatCompletion completion =
+                    await client.CompleteChatAsync(messages);
 
-            string json = completion.Content[0].Text;
+                string json = completion.Content[0].Text;
 
-            Console.WriteLine("Raw JSON");
-            Console.WriteLine("---------------------");
-            Console.WriteLine(json);
+                Console.WriteLine("Raw JSON");
+                Console.WriteLine("---------------------");
+                Console.WriteLine(json);
+                Console.WriteLine();
 
-            Console.WriteLine();
+                InterviewAnswer? result =
+                    JsonSerializer.Deserialize<InterviewAnswer>(
+                        json,
+                        new JsonSerializerOptions
+                        {
+                            PropertyNameCaseInsensitive = true
+                        });
 
-            InterviewAnswer? result =
-                JsonSerializer.Deserialize<InterviewAnswer>(
-                    json,
-                    new JsonSerializerOptions
-                    {
-                        PropertyNameCaseInsensitive = true
-                    });
+                if (result is null)
+                {
+                    Console.WriteLine("Could not parse the JSON response.");
+                    return;
+                }
 
-            Console.WriteLine("Parsed Object");
-            Console.WriteLine("---------------------");
-            Console.WriteLine($"Question   : {result?.Question}");
-            Console.WriteLine($"Difficulty : {result?.Difficulty}");
-            Console.WriteLine($"Answer     : {result?.Answer}");
-            Console.WriteLine($"Example    : {result?.Example}");
+                Console.WriteLine("Parsed Object");
+                Console.WriteLine("---------------------");
+                Console.WriteLine($"Question   : {result.Question}");
+                Console.WriteLine($"Difficulty : {result.Difficulty}");
+                Console.WriteLine($"Answer     : {result.Answer}");
+                Console.WriteLine($"Example    : {result.Example}");
+            }
+            catch (JsonException ex)
+            {
+                Console.WriteLine($"JSON parsing error: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"OpenAI Error: {ex.Message}");
+            }
         }
+
 
         public async Task StartFewShotPromptDemoAsync()
         {
-            var token = Environment.GetEnvironmentVariable("GITHUB_TOKEN");
+            ChatClient? client = CreateChatClient();
 
-            if (string.IsNullOrWhiteSpace(token))
-            {
-                Console.WriteLine("GITHUB_TOKEN is not configured.");
+            if (client is null)
                 return;
-            }
-
-            ChatClient client = new(
-                model: "gpt-4.1-mini",
-                credential: new ApiKeyCredential(token),
-                options: new OpenAIClientOptions
-                {
-                    Endpoint = new Uri("https://models.inference.ai.azure.com")
-                });
 
             List<ChatMessage> messages =
             [
                 new SystemChatMessage(
-            """
-            You are a .NET Interview Expert.
+        """
+        You are a .NET Interview Expert.
 
-            Classify interview questions.
+        Classify interview questions.
 
-            Return only:
+        Return only:
 
-            Question:
-            Difficulty:
-            Reason:
-            """
-        ),
+        Question:
+        Difficulty:
+        Reason:
+        """),
 
         new UserChatMessage(
-            """
-            Example 1
+        """
+        Example 1
 
-            Question:
-            What is int?
+        Question:
+        What is int?
 
-            Difficulty:
-            Easy
+        Difficulty:
+        Easy
 
-            Reason:
-            Basic C# concept.
+        Reason:
+        Basic C# concept.
 
-            --------------------
+        --------------------
 
-            Example 2
+        Example 2
 
-            Question:
-            Explain async/await.
+        Question:
+        Explain async/await.
 
-            Difficulty:
-            Medium
+        Difficulty:
+        Medium
 
-            Reason:
-            Requires understanding asynchronous programming.
+        Reason:
+        Requires understanding asynchronous programming.
 
-            --------------------
+        --------------------
 
-            Example 3
+        Example 3
 
-            Question:
-            Explain CAP Theorem.
+        Question:
+        Explain CAP Theorem.
 
-            Difficulty:
-            Hard
+        Difficulty:
+        Hard
 
-            Reason:
-            Distributed systems concept.
+        Reason:
+        Distributed systems concept.
 
-            --------------------
+        --------------------
 
-            Now classify this:
+        Now classify this:
 
-            Explain Dependency Injection.
-            """
-        )
+        Explain Dependency Injection.
+        """)
             ];
 
-            ChatCompletion completion =
-                await client.CompleteChatAsync(messages);
+            try
+            {
+                ChatCompletion completion =
+                    await client.CompleteChatAsync(messages);
 
-            Console.WriteLine(completion.Content[0].Text);
+                Console.WriteLine(completion.Content[0].Text);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"OpenAI Error: {ex.Message}");
+            }
         }
 
         public async Task StartProductionFewShotDemoAsync()
         {
-            var token = Environment.GetEnvironmentVariable("GITHUB_TOKEN");
+            ChatClient? client = CreateChatClient();
 
-            if (string.IsNullOrWhiteSpace(token))
-            {
-                Console.WriteLine("GITHUB_TOKEN is not configured.");
+            if (client is null)
                 return;
-            }
-
-            ChatClient client = new(
-                model: "gpt-4.1-mini",
-                credential: new ApiKeyCredential(token),
-                options: new OpenAIClientOptions
-                {
-                    Endpoint = new Uri("https://models.inference.ai.azure.com")
-                });
 
             List<ChatMessage> messages =
             [
                 new SystemChatMessage(
-            """
-            You are a Senior .NET Technical Interview Expert.
+        """
+        You are a Senior .NET Technical Interview Expert.
 
-            Your task is to classify .NET interview questions.
+        Your task is to classify .NET interview questions.
 
-            Classification Rules:
+        Classification Rules:
 
-            Easy (0-2 Years):
-            - Variables
-            - Data Types
-            - Loops
-            - Arrays
-            - Operators
-            - Basic OOP
+        Easy (0-2 Years):
+        - Variables
+        - Data Types
+        - Loops
+        - Arrays
+        - Operators
+        - Basic OOP
 
-            Medium (3-5 Years):
-            - LINQ
-            - Delegates
-            - Events
-            - async/await
-            - Collections
-            - Exception Handling
-            - Entity Framework
+        Medium (3-5 Years):
+        - LINQ
+        - Delegates
+        - Events
+        - async/await
+        - Collections
+        - Exception Handling
+        - Entity Framework
 
-            Hard (6-10+ Years):
-            - Dependency Injection
-            - SOLID Principles
-            - Design Patterns
-            - Microservices
-            - CQRS
-            - Event Sourcing
-            - Middleware
-            - Garbage Collection
-            - Performance Tuning
+        Hard (6-10+ Years):
+        - Dependency Injection
+        - SOLID Principles
+        - Design Patterns
+        - Microservices
+        - CQRS
+        - Event Sourcing
+        - Middleware
+        - Garbage Collection
+        - Performance Tuning
 
-            Return ONLY this format:
+        Return ONLY this format:
 
-            Question:
-            Difficulty:
-            Experience:
-            Reason:
-            """
-        ),
+        Question:
+        Difficulty:
+        Experience:
+        Reason:
+        """),
 
         new UserChatMessage(
-            """
-            Example 1
+        """
+        Example 1
 
-            Question:
-            What is int?
+        Question:
+        What is int?
 
-            Difficulty:
-            Easy
+        Difficulty:
+        Easy
 
-            Experience:
-            0-2 Years
+        Experience:
+        0-2 Years
 
-            Reason:
-            Basic C# syntax.
+        Reason:
+        Basic C# syntax.
 
-            ------------------------
+        ------------------------
 
-            Example 2
+        Example 2
 
-            Question:
-            Explain async/await.
+        Question:
+        Explain async/await.
 
-            Difficulty:
-            Medium
+        Difficulty:
+        Medium
 
-            Experience:
-            3-5 Years
+        Experience:
+        3-5 Years
 
-            Reason:
-            Requires understanding of asynchronous programming.
+        Reason:
+        Requires understanding of asynchronous programming.
 
-            ------------------------
+        ------------------------
 
-            Example 3
+        Example 3
 
-            Question:
-            Explain SOLID Principles.
+        Question:
+        Explain SOLID Principles.
 
-            Difficulty:
-            Hard
+        Difficulty:
+        Hard
 
-            Experience:
-            6-10+ Years
+        Experience:
+        6-10+ Years
 
-            Reason:
-            Senior-level software design concept.
+        Reason:
+        Senior-level software design concept.
 
-            ------------------------
+        ------------------------
 
-            Now classify:
+        Now classify:
 
-            Explain Dependency Injection.
-            """
-        )
+        Explain Dependency Injection.
+        """)
             ];
 
-            ChatCompletion completion =
-                await client.CompleteChatAsync(messages);
+            try
+            {
+                ChatCompletion completion =
+                    await client.CompleteChatAsync(messages);
 
-            Console.WriteLine();
-            Console.WriteLine("===== AI Classification =====");
-            Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine("===== AI Classification =====");
+                Console.WriteLine();
 
-            Console.WriteLine(completion.Content[0].Text);
+                Console.WriteLine(completion.Content[0].Text);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"OpenAI Error: {ex.Message}");
+            }
         }
 
         public async Task UserInputProductionFewShotDemoAsync()
         {
-            var token = Environment.GetEnvironmentVariable("GITHUB_TOKEN");
+            ChatClient? client = CreateChatClient();
 
-            if (string.IsNullOrWhiteSpace(token))
-            {
-                Console.WriteLine("GITHUB_TOKEN is not configured.");
+            if (client is null)
                 return;
-            }
-
-            ChatClient client = new(
-                model: "gpt-4.1-mini",
-                credential: new ApiKeyCredential(token),
-                options: new OpenAIClientOptions
-                {
-                    Endpoint = new Uri("https://models.inference.ai.azure.com")
-                });
 
             Console.Write("Enter Interview Question: ");
             string? interviewQuestion = Console.ReadLine();
@@ -510,145 +777,147 @@ namespace MyFirstAI.Services
             List<ChatMessage> messages =
             [
                 new SystemChatMessage(
-            """
-            You are a Senior .NET Technical Interview Expert.
+        """
+        You are a Senior .NET Technical Interview Expert.
 
-            Your task is to classify .NET interview questions.
+        Your task is to classify .NET interview questions.
 
-            Classification Rules:
+        Classification Rules:
 
-            Easy (0-2 Years):
-            - Variables
-            - Data Types
-            - Loops
-            - Arrays
-            - Operators
-            - Basic OOP
+        Easy (0-2 Years):
+        - Variables
+        - Data Types
+        - Loops
+        - Arrays
+        - Operators
+        - Basic OOP
 
-            Medium (3-5 Years):
-            - LINQ
-            - Delegates
-            - Events
-            - async/await
-            - Collections
-            - Exception Handling
-            - Entity Framework
+        Medium (3-5 Years):
+        - LINQ
+        - Delegates
+        - Events
+        - async/await
+        - Collections
+        - Exception Handling
+        - Entity Framework
 
-            Hard (6-10+ Years):
-            - Dependency Injection
-            - SOLID Principles
-            - Design Patterns
-            - Microservices
-            - CQRS
-            - Event Sourcing
-            - Middleware
-            - Garbage Collection
-            - Performance Tuning
+        Hard (6-10+ Years):
+        - Dependency Injection
+        - SOLID Principles
+        - Design Patterns
+        - Microservices
+        - CQRS
+        - Event Sourcing
+        - Middleware
+        - Garbage Collection
+        - Performance Tuning
 
-            Return ONLY in this format:
+        Return ONLY in this format:
 
-            Question:
-            Difficulty:
-            Experience:
-            Reason:
-            """
-        ),
+        Question:
+        Difficulty:
+        Experience:
+        Reason:
+        """),
 
         new UserChatMessage($$"""
-            Example 1
+        Example 1
 
-            Question:
-            What is int?
+        Question:
+        What is int?
 
-            Difficulty:
-            Easy
+        Difficulty:
+        Easy
 
-            Experience:
-            0-2 Years
+        Experience:
+        0-2 Years
 
-            Reason:
-            Basic C# syntax.
+        Reason:
+        Basic C# syntax.
 
-            ------------------------
+        ------------------------
 
-            Example 2
+        Example 2
 
-            Question:
-            Explain async/await.
+        Question:
+        Explain async/await.
 
-            Difficulty:
-            Medium
+        Difficulty:
+        Medium
 
-            Experience:
-            3-5 Years
+        Experience:
+        3-5 Years
 
-            Reason:
-            Requires understanding of asynchronous programming.
+        Reason:
+        Requires understanding of asynchronous programming.
 
-            ------------------------
+        ------------------------
 
-            Example 3
+        Example 3
 
-            Question:
-            Explain SOLID Principles.
+        Question:
+        Explain SOLID Principles.
 
-            Difficulty:
-            Hard
+        Difficulty:
+        Hard
 
-            Experience:
-            6-10+ Years
+        Experience:
+        6-10+ Years
 
-            Reason:
-            Senior-level software design concept.
+        Reason:
+        Senior-level software design concept.
 
-            ------------------------
+        ------------------------
 
-            Now classify this interview question:
+        Now classify this interview question:
 
-            {{interviewQuestion}}
-            """)
+        {{interviewQuestion}}
+        """)
             ];
 
-            ChatCompletion completion = await client.CompleteChatAsync(messages);
+            try
+            {
+                ChatCompletion completion =
+                    await client.CompleteChatAsync(messages);
 
-            Console.WriteLine();
-            Console.WriteLine("===== AI Classification =====");
-            Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine("===== AI Classification =====");
+                Console.WriteLine();
 
-            Console.WriteLine(completion.Content[0].Text);
+                Console.WriteLine(completion.Content[0].Text);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"OpenAI Error: {ex.Message}");
+            }
         }
 
         public async Task StartPromptChainingDemoAsync()
         {
-            var token = Environment.GetEnvironmentVariable("GITHUB_TOKEN");
 
-            if (string.IsNullOrWhiteSpace(token))
-            {
-                Console.WriteLine("GITHUB_TOKEN is not configured.");
+            ChatClient? client = CreateChatClient();
+
+            if (client is null)
                 return;
-            }
 
-            ChatClient client = new(
-                model: "gpt-4.1-mini",
-                credential: new ApiKeyCredential(token),
-                options: new OpenAIClientOptions
-                {
-                    Endpoint = new Uri("https://models.inference.ai.azure.com")
-                });
+
 
             Console.Write("Enter .NET Topic: ");
             string? topic = Console.ReadLine();
 
             if (string.IsNullOrWhiteSpace(topic))
+            {
+                Console.WriteLine("Topic cannot be empty.");
                 return;
+            }
 
-            //-------------------------------------------------
-            // STEP 1 - Classify Difficulty
-            //-------------------------------------------------
+            try
+            {
+                // STEP 1 - Classify Difficulty
 
-            List<ChatMessage> difficultyMessages =
-            [
-                new SystemChatMessage(
+                List<ChatMessage> difficultyMessages =
+                [
+                    new SystemChatMessage(
             """
             You are a Senior .NET Interview Expert.
 
@@ -656,80 +925,75 @@ namespace MyFirstAI.Services
 
             Rules:
             - Return ONLY one word.
-            - Allowed values are:
-              Easy
-              Medium
-              Hard
+            - Allowed values: Easy, Medium, Hard.
             - Never explain.
             - Never use markdown.
             - Never add punctuation.
             - Never return any other text.
-            """
-        ),
+            """),
 
-        new UserChatMessage(
-            $"Classify this .NET interview topic: {topic}")
-            ];
+            new UserChatMessage(
+                $"Classify this .NET interview topic: {topic}")
+                ];
 
-            ChatCompletion difficultyResponse =
-                await client.CompleteChatAsync(difficultyMessages);
+                ChatCompletion difficultyResponse =
+                    await client.CompleteChatAsync(difficultyMessages);
 
-            string difficulty = difficultyResponse.Content[0].Text.Trim();
+                string difficulty =
+                    difficultyResponse.Content[0].Text.Trim();
 
-            Console.WriteLine();
-            Console.WriteLine("========== Step 1 ==========");
-            Console.WriteLine($"Raw Response : {difficulty}");
+                if (difficulty is not ("Easy" or "Medium" or "Hard"))
+                {
+                    Console.WriteLine($"Unexpected difficulty response: {difficulty}");
+                    return;
+                }
 
-            //-------------------------------------------------
-            // STEP 2 - Explain Topic
-            //-------------------------------------------------
+                Console.WriteLine();
+                Console.WriteLine("========== Step 1 ==========");
+                Console.WriteLine($"Raw Response : {difficulty}");
 
-            List<ChatMessage> explanationMessages =
-            [
-                new SystemChatMessage(
+                // STEP 2 - Explain Topic
+
+                List<ChatMessage> explanationMessages =
+                [
+                    new SystemChatMessage(
             """
             You are a Senior .NET Trainer.
-            Explain concepts clearly.
-            """
-        ),
+            Explain concepts clearly using simple English.
+            Include practical, production-quality C# examples.
+            """),
 
-        new UserChatMessage(
+            new UserChatMessage(
             $"""
             Explain "{topic}" for a {difficulty} level .NET developer.
 
             Include:
-
             1. Simple Explanation
-
             2. Real-world Analogy
-
             3. Production C# Example
             """)
-            ];
+                ];
 
-            ChatCompletion explanationResponse =
-                await client.CompleteChatAsync(explanationMessages);
+                ChatCompletion explanationResponse =
+                    await client.CompleteChatAsync(explanationMessages);
 
-            Console.WriteLine();
-            Console.WriteLine("========== Step 2 : Explanation ==========");
-            Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine("========== Step 2 : Explanation ==========");
+                Console.WriteLine();
 
-            Console.WriteLine(explanationResponse.Content[0].Text);
+                Console.WriteLine(explanationResponse.Content[0].Text);
 
-            //-------------------------------------------------
-            // STEP 3 - Interview Questions
-            //-------------------------------------------------
+                // STEP 3 - Interview Questions
 
-            List<ChatMessage> interviewMessages =
-            [
-                new SystemChatMessage(
+                List<ChatMessage> interviewMessages =
+                [
+                    new SystemChatMessage(
             """
             You are a Senior .NET Interviewer.
             Generate interview questions only.
-            """
-        ),
+            """),
 
-        new UserChatMessage(
+            new UserChatMessage(
             $"""
             Generate 3 interview questions.
 
@@ -741,16 +1005,40 @@ namespace MyFirstAI.Services
 
             Return only the questions.
             """)
-            ];
+                ];
 
-            ChatCompletion interviewResponse =
-                await client.CompleteChatAsync(interviewMessages);
+                ChatCompletion interviewResponse =
+                    await client.CompleteChatAsync(interviewMessages);
 
-            Console.WriteLine();
-            Console.WriteLine("========== Step 3 : Interview Questions ==========");
-            Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine("========== Step 3 : Interview Questions ==========");
+                Console.WriteLine();
 
-            Console.WriteLine(interviewResponse.Content[0].Text);
+                Console.WriteLine(interviewResponse.Content[0].Text);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"OpenAI Error: {ex.Message}");
+            }
+        }
+
+        private ChatClient? CreateChatClient()
+        {
+            var token = ApiKeyProvider.GetApiKey("OPENAI_API_KEY");
+
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                Console.WriteLine("OPENAI_API_KEY is not configured.");
+                return null;
+            }
+
+            return new ChatClient(
+                model: "gpt-6-luna",
+                credential: new ApiKeyCredential(token),
+                options: new OpenAIClientOptions
+                {
+                    Endpoint = new Uri("https://api.openai.com/v1")
+                });
         }
     }
 }
